@@ -1,6 +1,7 @@
 import { Button, Card } from 'flowbite-react'
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import ApiHelper from '../Helpers/ApiHelper.js';
 
 export const TYPE = {
     user: 'user',
@@ -10,6 +11,7 @@ export const TYPE = {
 export default function RoundedCard(props) {
 
     const { item, type } = props;
+    const navigate = useNavigate();
 
     return <Card>
         <div className={` ${type === TYPE.user && 'md:h-60'} flex flex-col justify-between`}>
@@ -21,11 +23,15 @@ export default function RoundedCard(props) {
                     ? UserInfo(item)
                     : ProductInfo(item)
             }
-            <Link className='mt-3 flex justify-center' to='/about-us'>
-                <Button>
-                    { type === TYPE.user? 'Show Products': 'Display Info' }
-                </Button>
-            </Link>
+            {
+                type === TYPE.user
+                    ? <Link className='mt-3 flex justify-center' to={`${item.id}/owned-products`}>
+                        <Button>Show Products</Button>
+                    </Link>
+                    : <Button onClick={() => navigate("/products/info", { state: { product: item } })}>Display Info</Button>
+
+            }
+
         </div>
     </Card>
 }

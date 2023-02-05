@@ -6,27 +6,42 @@ export default class ApiHelper
 {
 
     static async getAllUsers() {
-        let response;
-        await axios.get(`${BASE_URL}/users`)
-            .then((value) => response = value)
+
+        return await axios.get(`${BASE_URL}/users`)
+            .then((value) => {
+                return value.data.users;
+            })
             .catch((error) => {
                 console.log("ERROR: " + error)
-                response = {message:'Connection Failed'}
+                return {message:'Connection Failed'};
             });
 
-        return response.data.users;
     }
 
     static async getAllProducts() {
-        let response;
-        await axios.get(`${BASE_URL}/products`)
-            .then((value) => response = value)
-            .catch((error) => {
-                console.log("ERROR: " + error)
-                response = {message:'Connection Failed'}
-            });
 
-        return response.data.products;
+        return await axios.get(`${BASE_URL}/products`)
+        .then((value) => {
+            return value.data.products;
+        })
+        .catch((error) => {
+            console.log("ERROR: " + error)
+            return {message:'Connection Failed'};
+        });
+        
+    }
+
+    static async getProductsOfOwner(id) {
+        
+        return await axios.get(`${BASE_URL}/products/owner/${id}`)
+        .then((value) => {
+            return value.data.products;
+        })
+        .catch((error) => {
+            console.log("ERROR: " + error)
+            return {message:'Connection Failed'};
+        });
+
     }
 
 }

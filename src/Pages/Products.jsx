@@ -10,14 +10,14 @@ export default function Users() {
 
   const [isLoading, setIsLoading] = useState(true)
   const [products, setProducts] = useState(true)
-  
-   
-  function init() {
-    ApiHelper.getAllProducts().then(result =>{
-      setIsLoading(false);
-      setProducts(result);
-      console.log(result);
-    } );
+
+
+
+  async function init() {
+    const result = await ApiHelper.getAllProducts();
+
+    setProducts(result)
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -30,8 +30,10 @@ export default function Users() {
       {
         isLoading
           ? <Loading></Loading>
-          : <GridCards items={products} type={TYPE.product}/>
-    }
+          : products?.message
+            ? <section className='mx-auto my-20 text-center text-2xl text-yellow-300'>{products.message}</section>
+            : <GridCards items={products} type={TYPE.product} />
+      }
     </main>
   </>
 
